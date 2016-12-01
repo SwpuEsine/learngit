@@ -1,3 +1,5 @@
-git diff  �����������ݴ������պ͹���Ŀ¼��  ��ǰ�ļ��Ĳ��
+﻿git diff  是用来跟踪暂存区快照和工作目录中  当前文件的差距
 
-�����ǰ�ļ���Ҫ���ٵ�fdsafsafsa
+这个当前文件是要跟踪的
+
+fdsafs
