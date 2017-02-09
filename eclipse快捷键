@@ -1,0 +1,19 @@
+                                              Eclipse中常用的快捷键                                          
+Ctrl+H 全文搜索
+Ctrl+F 当前文件
+Ctrl+Shift+T 类文件
+Ctrl+Shift+R 资源文件
+Shift+Enter 直接切换到下一行
+outline 轮廓 大纲
+Ctrl+o 快速看某个类的属性和方法  非常好用 
+Ctrl+e 可以切换你曾经打开过的项目
+Ctrl+2 在文章很小的时候 里面的换名字也很好用
+alt+↑ 可以把这行迅速上下拖动
+Ctrl+2 l的用法
+比如： xxxx.getValue(); 你把光标移动到 getValue 处，
+或者用鼠标双击选中，按 ctrl + 2 （右下角会出来一个提示，不等提示也可以） 你再按下L健 就可以看到效果了
+ctrl+alt+h可以看到被那些方法调用了 生成调用目录
+ctrl+q 可以回到最后一次修改的地方
+ctrl+m是max的意思 表示最大化
+ctrl+1是错误的修改建议
+ctrl+.是跳转到下一个错误处
