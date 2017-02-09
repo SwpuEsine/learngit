@@ -1,0 +1,112 @@
+关于cloneable 关于seriable接口  关于私有静态内部类 Local国际化的使用
+ResourceBundle 就是java里面的 读取资源  可以根据文件名的 等来确定读取的是什么 国家的 什么语言
+如果没有格式,则会使用默认的iso8859-1 英文格式来读取  读取指定文件名的.properties
+内部类的私有属性是可以给外部类访问的，但是不是直接可以访问，有两种情况：
+1.静态内部类，如你的题目中的类，它可以通过内部类的名字访问，比如：
+
+InnerHolder.instance
+
+2.非静态内部类，如果内部类不是静态的，那么可以通过内部类对象来访问，比如：
+
+new InnerClass().xxx;  // xxx 是内部类的私有成员。
+
+为什么会出现这种情况呢，私有成员在外面不是不能访问的吗，但是，在 Java 中，内部类和外部类有一些比较特殊的关系，可以这样理解，至于为什么这样设计，那只能去问Java的设计者了。
+1.内部类可以直接访问外部类的所有成员（当然，静态内部类是不能访问外部类的非静态成员的），而不需要受访问权限控制。
+2.在内部类中，可以通过内部类的对象来访问内部类的所有成员（当然，一样有静态和非静态的限制），而不需要受访问权限的控制。
+
+java中的静态内部类
+
+
+public class UserServiceFactory {
+    public static UserServiceFactory getInstance() {
+        return InnerHolder.instance;
+    }
+
+    private static class InnerHolder {
+        private static final UserServiceFactory instance = new UserServiceFactory();
+    }
+}
+
+这个问题涉及到外部类和内部类的一个访问的性质：外部类和内部类都可以互相访问对方的任何成员，包括私有成员。所以问题中的代码是可以编译通过并且正常运行的。
+下面解释原因。
+编译上述代码，会发现生成了两个.class文件：UserServiceFactory.class和UserServiceFactory$InnerHolder.class，说明内部类和外部类是分开编译的，都是作为单独的类进行操作的。然后对生成的UserServiceFactory.class文件进行反编译，函数getInstance()的结果如下：
+
+public static UserServiceFactory getInstance()
+{
+    return InnerHolder.access._mth1(new InnerHolder(null));
+}
+
+注意，这里函数里面变成了返回InnerHolder.accsee._mth1(new InnerHolder(null)),而并不是最原始的样子。这就是秘诀所在了。对于内部类，编译器会对private成员都生成一个函数，一般都是以access开头。而对于外部类对内部类的private成员的访问，编译器更改为对这个内部类的对应函数的调用，从而实现了对内部类private成员的访问。
+
+而对于通过new InnerHolder(null)来创建内部类对象，是因为编译器给内部类添加了一个额外的包访问权限的构造器，如下所示：
+
+UserServiceFactory$InnerHolder(UserServiceFactory$InnerHolder userservicefactory$innerholder)
+{
+    this();
+}
+
+其中this()是调用内部类自己的私有构造函数。外部类能够访问到这个包访问权限构造器，所以能够构造内部类对象，并调用相关方法。
+内部类的性质  内部类可以和外部类互相通信  可以访问对方的任何属性 包括私有
+
+
+
+为什么要使用内部类  1 内部类的第一个好处是  使得多重继承得以实现  一般都是单继承  或者实现一个接口   但是内部类可以实现多重继承
+首先因为内部类 可以无障碍访问外部类的 任何东西  而外部类也可以访问内部类的任何东西  不管他的属性是不是私有的
+当生成.class文件后可以发现  java虚拟机 将私有属性 转换为一个公有方法 来实现了访问  而且私有类的构造 也是通过生成另外一个类的构造  然后使用this 来访问
+this  、在单个外围类中，可以让多个内部类以不同的方式实现同一个接口，或者继承同一个类。
+
+
+public class Outter {
+    class Inner{
+        private final static int x=1;   
+        /* compile errors for below declaration
+         * "The field x cannot be declared static in a non-static inner type, 
+         * unless initialized with a constant expression"*/
+//      final static Inner a=new Inner();
+//      static Inner a1=new Inner();
+//      static int y;
+    }
+   
+    非静态内部类  不应该有静态成员
+    
+    
+    
+        public static void main(String[] args) {
+        OuterClass outerClass = new OuterClass();
+        OuterClass.InnerClass innerClass = outerClass.new InnerClass();
+        innerClass.display();
+    }
+    
+    内部类的使用方法
+    
+    同时如果我们需要生成对外部类对象的引用，可以使用OuterClassName.this，这样就能够产生一个正确引用外部类的引用了。当然这点实在编译期就知晓了，没有任何运行时的成本。
+    
+    
+    https://www.cnblogs.com/chenssy/p/3388487.html
+    
+    
+    
+      成员内部类也是最普通的内部类，它是外围类的一个成员，所以他是可以无限制的访问外围类的所有 成员属性和方法，尽管是private的，但是外围类要访问内部类的成员属性和方法则需要通过内部类实例来访问。
+
+      在成员内部类中要注意两点，第一：成员内部类中不能存在任何static的变量和方法；第二：成员内部类是依附于外围类的，所以只有先创建了外围类才能够创建内部类。
+      
+            这里我们就需要看清几个地方
+
+        1、 匿名内部类是没有访问修饰符的。
+
+         2、 new 匿名内部类，这个类首先是要存在的。如果我们将那个InnerClass接口注释掉，就会出现编译出错。
+
+         3、 注意getInnerClass()方法的形参，第一个形参是用final修饰的，而第二个却没有。同时我们也发现第二个形参在匿名内部类中没有使用过，所以当所在方法的形参需要被匿名内部类使用，那么这个形参就必须为final。
+
+        4、 匿名内部类是没有构造方法的。因为它连名字都没有何来构造方法。
+        
+        
+        匿名内部类是没有构造方法的
+        因为没有名字  匿名内部类无法使用非final的参数
+    
+        我们知道非静态内部类在编译完成之后会隐含地保存着一个引用，该引用是指向创建它的外围内，但是静态内部类却没有。没有这个引用就意味着：
+
+      1、 它的创建是不需要依赖于外围类的。
+
+      2、 它不能使用任何外围类的非static成员变量和方法。
+    
