@@ -1,0 +1,40 @@
+ORIG_HEAD仅仅是当进行危险操作（比如merge）时才会变更为HEAD指针的原值
+info 文件夹里面放的是git ignore 一样的内容 表示提交的时候  忽略那些
+logs 是日志
+head 表示当前的头指针指向那个分支
+config 是配置文件
+
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+	hideDotFiles = dotGitOnly
+[remote "origin"]
+	url = git@github.com:SwpuEsine/learngit.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+这是内容
+
+fetch head 是抓取下来的头指针  大多数的git 操作在本地进行  也
+也就是如果  使用git remote add 而 不是git clone  那么使用 git branch -a  是看不到远程分支的
+必须使用git fetch 来抓取
+ORIG_HEAD 是在进行危险操作的时候 的头指针   如在merge前  会记录他的hash值
+
+
+refs文件夹内的内容 是本地分支和远程分支的所有内容 包括名字和hash值
+
+如果是clone下来的  则会自动进行upstream 来进行跟踪  则使用git merge  和git push  会自动进行
+
+也可以进行 git merge  分支名  来进行合并  也可以设置默认进行跟踪
+
+
+再运行 git checkout -b local-branchname origin/remote_branchname  就可以将远程分支映射到本地命名为local-branchname  的一分支。 
+
+当使用git checkout -b 本地名  origin/远程名   就会产生自动跟踪  
+不需要使用git branch --track  本地名  远程名来  进行跟踪   记住名字要一致  否则不会起作用
+如果是git checkout -b 本地名  则需要 使用git branch --track 或者git branch -u 名字一致  来进行跟踪
+
+
+git branch -vv 会看出 本地分支和远程分支是否管理
