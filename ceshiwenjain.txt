@@ -1,0 +1,2 @@
+不行  如果不是git clone 下来的 则必须跟踪 才可以使用git push  git merge也是
+
