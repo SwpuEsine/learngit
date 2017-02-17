@@ -1,0 +1,46 @@
+boot 分区下面主要是内核的文件   如果你有grub开机管理软件的话  则会有/boot/grub 文件
+dev  目录下面主要是 装备与接口档案
+
+系统的主要设置都在这个文档里面 例如人员账号密码  各种服务的启动项 等等
+
+cat 可以查看文件   more可以看更多 f下一页 enter 下一行 q退出
+/home 是系统的家文件  当你设置了一个人员的 时候  就会有另外的子目录
+
+/bin 表示普通用户可以使用的二进制文件  /sbin  表示super也就是超级用户可以使用的文件
+
+/var目录表示常变动的内容目录  如/var/cache 表示放入的缓存文件  var/run 放置的是启动程序或启动服务的pid
+ls-ld 可以查看目录的创建时间
+
+[root@localhost /]# cd test
+[root@localhost test]# touch app.txt
+[root@localhost test]# echo "hello">> app.txt
+[root@localhost test]# cat app.txt
+hello
+[root@localhost test]# 
+
+
+mv是移动文件
+
+mv 文件名1 文件名2  改名
+mv 文件名  目录   移动
+档案系统  windows 中FAt 与NTFS 系统  这是两种可以在98与2000后可以被认识的 档案系统
+在linux 中ext2 如果你的linux 要想认识windows中的档案系统  则需要把档案系统编译到内核中去
+
+[root@localhost test1]# cd /lib/modules/`uname -r`/kernel/fs
+[root@localhost fs]# ls
+autofs4     configfs  exportfs  fat      jbd    mbcache.ko  nls       xfs
+btrfs       cramfs    ext2      fscache  jbd2   nfs         squashfs
+cachefiles  dlm       ext3      fuse     jffs2  nfs_common  ubifs
+cifs        ecryptfs  ext4      gfs2     lockd  nfsd        udf
+
+上面的是内核支持的 档案系统
+
+
+『它是可以轻易的从 ext2 变更到 ext3 来获得一个强而有力的日志式档案系统而不需要重新做格式化』。
+『那是正确的，为了体验一下 ext3 的好处是不需要去做一种长时间的，
+冗长乏味的且易于产生错误的备份工作及重新格式化的动作』。
+
+ext3 比ext2 多了日志记录功能
+如果断电等情况  但是ext3 会有磁针 可以查看断电的时候  是否系统正在进行写入等工作
+对于这些档案系统的管理  是由linux系统中的VFS来进行管理的   virtue  filesystem  switch  虚拟文件系统切换
+
