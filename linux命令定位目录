@@ -1,0 +1,66 @@
+which chmod--可以找到chmod命令的路径在哪里  可以显示别名
+whereis chmod 帮助文档所在位置 还有chmod的路径
+上面只能查看命令   
+
+find 可以查看任何东西
+
+/usr/bin/find   所有用户
+相当于windows 下的查找
+
+1 -name 是根据文件名来查找
+
+find /  这是在整个硬盘查找  不要使用这种查找
+
+find /etc -name init  这里是精确匹配  只有Init  windows下会返回init和包含init的文件
+如果找init 开头的文件  可以使用通配符* init*  包含任何字符0个也可以
+
+?单个匹配
+
+find /etc -name init???
+数据块是最小存储单位 512字节=0.5kb
+
+100mb -size block
+查找>多少   或者<多少
+
+atime  是access time  是访问时间
+ctime  是change时间
+
+mtime  是modify time
+
+vi 可以改变访问时间  就是开始使用vi的时候
+chmod 会改变 ctime 也就是因为改变了权限  也就是innode信息
+vi也会改变ctime时间  也就是changetime 因为改变了内部的大小 等元数据
+cat 会改变atime  也就是访问时间
+
+innode 的大小是128byte 
+
+linux的使用模式分为三种    一般模式   编辑模式    指令列模式
+vi 指令 会显示行数 字符数  如果是新文件 会显示  文件名
+一般模式只能移动光标   编辑模式可以输出     指令列模式   : / ?  可以把光标移动到最下面的一行
+ 搜寻资料   读取  存盘  离开vi  是在这个指令下完成的
+ 
+ 30下箭头  可以瞬间向下移动30行
+ 
+ 一般模式/m  可以找到含有m的地方
+ 
+ vi在编辑的时候 会有一个隐藏文件
+ 
+ 
+ .tt.txt.swap  是一个隐藏文件  
+ 
+ vim 是一个好用的命令   使用ctrl+v 然后移动方向键   使用Y表示yes  复制一个块     然后移动光标  使用p  
+ 
+ 就可以使用粘贴按钮
+ 
+ 开启多窗口  sp:文件名
+ 
+ ctrl+w+j  下一个窗口  ctrl+w+k 上一个窗口
+ 
+ 复制块ctrl+v  然后移动光标  y  p
+ 
+ 
+ [root@localhost etc]# find /etc -name man*
+/etc/man.config
+
+挂载与开机挂载  
+挂载是指  在每次使用硬盘的时候  就把你的目录挂载 在硬盘上    而自动挂载避免了 每次使用前都挂载的现象
