@@ -1,0 +1,165 @@
+例如一个声卡如何发生
+首先需要一个声卡
+然后需要芯片组 然后有驱动程序  最后由操作系统内核来调用
+
+我们的操作如何被硬件知晓，就是我们通过shell和内核沟通，内核和硬件沟通
+
+你曾经使用过的.bash 存储在用户~/.bash_history
+这个目录是存储上下使用过的记录，如果是这次正在使用的记录，则会暂存在内存
+当你注销用户的时候才会写入文件
+
+cat在第一个命令是 命令补全   而在第二个字的时候是  命名匹配
+
+ls命令也可以使用*与?等万能字符
+如何区分一个执行档命令是bash  还是非bash   如果是bash 
+
+[esine@localhost ~]$ type -a virb
+bash: type: virb: not found
+[esine@localhost ~]$ type -a cd
+cd is a shell builtin
+
+
+\Enter  两个字符要挨着  就会换行 但是下面的命令是和上面的命令挨着的    
+etc/passwd  里面保存着 系统给我们分配的shell  是bash
+
+echo $HOME
+echo $MAIL
+echo $PATH
+上面三条就可以输出变量的信息
+
+通常大写字符为系统预设变量       自行设定变量可以使用小写字符(方便判断)
+
+如果创建的变量要在其他子程序中使用  则需要使用export命令将变量导入
+
+myname=wwj
+
+echo $myname
+[esine@localhost ~]$ name="$myname"yes
+[esine@localhost ~]$ echo $name
+wwjyes
+[esine@localhost ~]$ 
+在变量的设定中  双引号可以保留其内容   单引号不会保留内容,单引号会设定单引号内的内容
+··esc提示符中包含的字符 会先被执行，而其结果会提供给外部进行输出
+
+[esine@localhost /]$ echo $`uname -r`
+$2.6.32-504.el6.x86_64
+
+
+ls -l `locate crontab`
+
+要查看目前系统中有多少环境变量   我们可以使用env与exprot 来查阅
+cd ~ 会跳转到用户目录
+
+echo$$ 可以看pid
+
+export 命令可以将程序变量转换为 环境变量
+
+locale -a 可以显示linux 支持多少种的语系
+
+zh_CN.gb18030
+zh_CN.gb2312
+zh_CN.gbk
+zh_CN.utf8
+
+
+[esine@localhost /]$ read atest
+this is a test
+[esine@localhost /]$ echo $atest
+this is a test
+[esine@localhost /]$ read -p"please press" -t 30 named
+please presskk 
+[esine@localhost /]$ $ named
+bash: $: command not found
+[esine@localhost /]$ echo $named
+kk
+[esine@localhost /]$ 
+
+
+[esine@localhost /]$ sum=100+40+20
+[esine@localhost /]$ echo $sum
+100+40+20
+[esine@localhost /]$ declare -i sum=100+40+20
+[esine@localhost /]$ echo $sum
+160
+[esine@localhost /]$ 
+
+
+ulimit 文件系统与程序的限制关系
+
+
+[esine@localhost /]$ echo $HOME
+/home/esine
+[esine@localhost /]$ echo ${HOME}
+/home/esine
+[esine@localhost /]$ 
+
+
+[root@linux ~]# echo ${vbird##/*/}
+testing.x.sh <==删除了 /home/vbird/testing/
+[root@linux ~]# echo ${vbird#/*/}
+vbird/testing/testing.x.sh <==仅删除 /home/ 而已
+# 这两个小例子有趣了～变量名称后面如果接了两个 ## ，表示在 ##
+# 后面的字符串取『最长的』那一段；如果仅有一个 # ，表示取『最小的那一段』喔！
+
+
+[root@linux ~]# echo ${vbird%%/*/}
+/home/vbird/testing/testing.x.sh <==都没被删除
+[root@linux ~]# echo ${vbird%%/*}
+<==被删除光了！
+[root@linux ~]# echo ${vbird%/*}
+/home/vbird/testing <==只删除 /testing.x.sh 部分
+# 这个例子当中需要特别注意，那个 % 比对的是『最后面那个字符』的意思，
+# 所以啰，第一个方式当然不对～因为 vbird 这个变量的内容最后面是 h 而不是 / 啊！
+# 至于 %%/* 则是删除『最长的那个 /* 』，当然就是全部喔！而 %/* 则是最短的那个！
+
+
+
+Tips: 底下的例子当中，那个 var 与 str 为变量，
+我们想要针对 str 是否有设定来决定 var 的值喔！ 一般来说，
+str: 代表『str 没设定或为空的字符串时』；至于 str 则仅为『没有该变数』。
+
+
+子好了，我们知道以前的 DOS 年代，列出目录与档案就是 dir ，而清除屏幕就是 cls ，那么如果我想要在 linux 里面也使用相同的指令呢？那就以 alias 来进行指令的别名设定：
+alias cls='clear' alias dir='ls -l'
+只要加入这两行，以后你输入 cls 及 dir 就可以执行了！很方便吧！
+
+命令别名的好处
+
+由于linux系统不会主动去找当前目录下的可执行文件
+可以使用./quid 命令来执行当前目录下的可执行文件
+
+[esine@localhost ~]$ cat ~/.bashrc
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+登录讯息显示数据： /etc/issue, /etc/motd
+# User specific aliases and functions
+[esine@localhost ~]$ cat /etc/issue
+
+
+motd message of the day   每日信息
+
+/etc/profile 存在着可以自行设定的设定档
+
+
+histsize 命令数
+
+1. 先读取 /etc/profile ，再根据 /etc/profile 的内容去读取其它额外的设定档， 例如 /etc/profile.d 与 /etc/inputrc 等等设定档；
+2. 根据不同的使用者，到使用者家目录去读取 ~/.bash_profile 或 ~/.bash_login 或 ~/.profile 等设定档；
+3. 根据不同使用者，到他家目录去读取 ~/.bashrc 。
+根据使用者读取  在使用rc命令的时候
+这个是每次执行script脚本的时候 就会执行一次  而如果在profile文件里面  则只有开机的时候执行
+
+
+[root@linux ~]# cd /lib/modules/`uname -r`/kernel/drivers
+# 被 ` ` 括起来的内容『会先执行』
+
+数据流重导向 <是覆盖输入  <<是追加输入
+
+>是输出  >>是追加输出
+
+看到397页
