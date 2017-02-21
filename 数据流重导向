@@ -1,0 +1,98 @@
+>输出>> 输出追加  2>是错误输出
+如果查询的结果只要正确的,错误的不要，那么dev/null就很重要了   他就像是一个黑洞垃圾桶
+[dmtsai@linux ~]$ find /home -name testing > list_right 2> /dev/null
+
+[dmtsai@linux ~]$ find /home -name testing > list 2>&1 <==正确写法
+
+cat>catfile<file.txt   这个是创建一个catfile文件  然后把file.txt文件的内容写进去
+
+cat>catfile<<eof  这个eof 是代替ctrl+d 的作用  就是碰到eof的时候就终止，这个主要是用来写程序的时候
+
+command1 && command2 || command3
+
+[root@linux ~]# sync; sync; shutdown -h now
+
+[root@linux ~]# ls /tmp && touch /tmp/testingagin
+
+[root@linux ~]# ls /tmp/vbirding || touch /tmp/vbirding
+
+
+管线命令
+这个管线命令『 | 』仅能处理经由前面一个指令传来的正确信息，也就是 standard output ( STDOUT ) 的信息
+，对于 stdandard error 并没有直接处理的能力，请记得。那么整体的管线命令可以使用下图表示之：
+
+
+每个管线前后都是指令   而后面的指令是以前面的输出来作为前提的
+一般处理信息都是以行为单位的
+
+[root@linux ~]# cut -d'分隔字符' -f fields
+[root@linux ~]# cut -c 字符区间
+参数：
+-d ：后面接分隔字符。与 -f 一起使用；
+-f ：依据 -d 的分隔字符将一段讯息分割成为数段，用 -f 取出第几段的意思；
+-c ：以字符 (characters) 的单位取出固定字符区间；
+
+
+cut通常在分析数据的时候会比较常用
+
+双向流重导向   可以把流同时导入文件与屏幕中
+
+tee
+
+last |tee t.txt |cut -d ‘ ’ -f 1
+
+tee 会将写过的消息覆盖  因此要加上-a  才会将消息累加  append 
+
+[root@linux ~]# ls -l / | tee -a ~/homefile | more
+
+
+
+
+[root@linux ~]# paste /etc/passwd /etc/shadow
+bin:x:1:1:bin:/bin:/sbin/nologin bin:*:12959:0:99999:7:::
+daemon:x:2:2:daemon:/sbin:/sbin/nologin daemon:*:12959:0:99999:7:::
+adm:x:3:4:adm:/var/adm:/sbin/nologin adm:*:12959:0:99999:7:::
+# 注意喔！同一行中间是以 [tab] 按键隔开的！
+
+档案分隔  split -b size 就可以把档案分隔开来
+
+正则表达式    需要有工具的帮助   这里使用grep工具   正则表达式与万用字符是不一样的东西
+
+
+
+[esine@localhost tmp]$ grep -n 't[ae]st' regular.txt 
+8:I can't finish the test.
+9:Oh! The soup taste good.
+[esine@localhost tmp]$ grep -n '[^g]oo' regular.txt
+2:apple is my favorite food.
+3:Football game is not use feet only.
+18:google is the best tools for search keyword.
+19:goooooogle yes!
+
+^$  ^出现在开始 表示行首   出现在[]里面表示反选   $出现   表示在行尾
+
+正则表达式中.表示有一个
+
+*表示重复0个或多个前面的字符
+
+同理，当我们需要『至少两个 o 以上的字符串』时，就需要 ooo* ，亦即是：
+
+如果要找出g开头和g结尾  中间可有可无的字符
+
+g.*g.表示有一个字符  *表示前面可有可无
+
+[root@test root]# grep -n 'go\{2,\}g' regular_express.txt
+
+
+linux中正则表达式  其中{} 是特殊字符  需要转义 \{  \}
+（） 是群组
+
+
+范例：egrep -n 'g(la|oo)d' regular_express.txt
+
+egrep 是grep的扩展  可以支持群组 +  | 等高级的正则表达式
+
+awk工具
+
+mkdir -p /tmp/test  -p是可以创建连续的目录
+
