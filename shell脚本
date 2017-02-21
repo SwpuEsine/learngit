@@ -1,0 +1,112 @@
+令汇整起来一次执行，但是 Shell script 拥有更强大的功能，那就是，
+他可以进行类似程序 (program) 的撰写，并且，不需要经过编译 (compiler) 就能够执行，
+
+脚本:剧本  就是按照设定的情况来执行  不需要编译成计算机可识别的二进制编码
+
+shell脚本的运行速度 相对于传统的编译语言  速度比较慢   因为要调用第三方函数库  不像其他的编译语言直接跟 硬件交互
+
+[esine@localhost ~]$ set | grep 'PATH'
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/home/esine/bin
+WINDOWPATH=1
+[esine@localhost ~]$ set |grep -n 'PATH'
+52:PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/home/esine/bin
+71:WINDOWPATH=1
+
+
+var=$(()) 这个是进行 吧字符串转换为数值类  然后运算
+ 
+当我要检测系统上面某些档案或者是相关的属性时，
+当需要判断系统上 某些档案或者属性是否存在时候  可以使用test 指令
+
+在shell脚本的书写中[] 括号被常用在条件判断式中   [ a == b ] 记住要有4个空格
+
+[ "$yn" == "Y" -o "$yn" == "y" ]，“-o”表示“或”，连接两个判断。
+
+[ -n "$1" ] && echo "The 1st paramter is ==> $1" || exit 
+上面的表示-notnull 表示不为空
+
+if [ 条件判断式 ]; then
+当条件判断式成立时，可以进行的指令工作内容；
+else
+当条件判断式不成立时，可以进行的指令工作内容；
+fi
+
+外国人经常用反向来表示end if
+
+
+netstat -tuln 目前主机有启动的那些服务
+
+• 80: WWW
+• 22: ssh
+• 21: ftp
+• 25: mail
+
+
+
+case $1 in
+"hello")
+echo "Hello, how are you ?"
+;;
+"")
+echo "You MUST input parameters, ex> $0 someword"
+;;
+*)
+echo "Usage $0 {hello}"
+;;
+
+
+
+shell 脚本与javascript 脚本类似  是解释执行  不需要编译  因此执行速度会稍慢
+而且后面执行的函数必须在前面已经声明，否则会报错
+
+
+while do done, until do done
+
+function printit(){
+echo "Your choice is $1"
+}
+echo "This program will print your selection !"
+case $1 in
+"one")
+printit 1
+;;
+"two")
+printit 2
+;;
+"three")
+printit 3
+;;
+*)
+echo "Usage {one|two|three}"
+;;
+esac
+
+上面的与java 中的使用参数是类似的
+
+
+until [ "$yn" == "yes" ] || [ "$yn" == "YES" ]
+do
+read -p "Please input yes/YES to stop this program: " yn
+done
+while
+do  
+
+done
+while 表示条件成立执行   until 表示不成立执行
+
+[esine@localhost init.d]$ echo $(($a+1))
+2
+
+
+
+for (( i=1; i<=100; i=i+1 ))
+do
+s=$(($s+$i))
+done
+echo "The result of '1+2+3+...+100' is ==> $s"
+一样也是很简单吧！利用这个 for 则可以直接限制循
+
+
+1. 第一次循环时， $var 的内容为 con1 ；
+2. 第二次循环时， $var 的内容为 con2 ；
+3. 第三次循环时， $var 的内容为 con3 ；
