@@ -1,0 +1,57 @@
+1  linux 压缩指令
+
+gunzip -c 文件名> urfile.txt  c 是创建一个输出流  这个会保留原文件
+gzip 是不会保留原文件
+
+gzip 文件名
+gzip -d 文件名.gz/ gunzip
+mkdir -p test2/test22 递归地创建多个目录
+
+stat可以显示文件的 各种时间与详细信息
+
+
+tar 参数  文件名.gz   文件名
+参数-c 建立新的压缩文件
+-v 显示压缩过程
+-f 指定压缩文件
+
+-x 是解压缩
+
+
+解包：tar xvf FileName.tar
+打包：tar cvf FileName.tar DirName
+
+tar会保留原来的 文件
+
+cat
+1.一次显示整个文件。
+$ cat filename
+2.从键盘创建一个文件。
+$ cat > filename
+只能创建新文件,不能编辑已有文件.
+3.将几个文件合并为一个文件。
+$cat file1 file2 > file
+
+mv 是文件改名和 移动目录
+
+
+$ grep ‘test’ d
+显示所有以d开头的文件中包含 test的行。
+$ grep ‘test’ aa bb cc
+显示在aa，bb，cc文件中匹配test的行。
+$ grep ‘[a-z]{5}’ aa
+显示所有包含每个字符串至少有5个连续小写字符的字符串的行。
+$ grep ‘w(es)t.\1′ aa
+如果west被匹配，则es就被存储到内存中，并标记为1，然后搜索任意个字符(.)，这些字符后面紧跟着 另外一个es(\1)，找到就显示该行。如果用egrep或grep -E，就不用”\”号进行转义，直接写成’w(es)t.\1′就可以了
+
+man可以查看文件  和命令
+
+
+
+可以在/etc/profile或自己的~/.bashrc 中设定指定的别名
+
+还有，如果你想给每一位用户都生效的别名，请把alias la='ls -al' 一行加在/etc/bashrc最
+
+
+locate service  可以查看service的文件ta他是每天的例行程序来监的,存储在数据空中，不用扫描磁盘，所以非常快，
+但是刚创建 可能会找不到  先要使用updatedb来进行更新
