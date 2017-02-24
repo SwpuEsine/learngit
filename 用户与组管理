@@ -1,0 +1,82 @@
+shell变量包括两种变量
+1.本shell私有的变量：通过赋值语句定义好的变量，可以通过如下方法定义shell变量
+   A1="1234"
+   delcare A2="2345"
+2.用户的环境变量：通过export语法导出的shell私有变量，可以通过如下方法导出用户环境变量
+   A1="1234"
+   export A1 #先定义再导出
+   export A3="34"
+导出成的用户环境变量可以在所有的shell中看到
+
+env显示用户的环境变量；
+set 和declare显示当前shell的定义的私有变量，包括用户的环境变量；
+export 显示当前导出成的用户变量的shell变量，并显示变量的属性(是否只读)，按变量名称排序；
+
+当前用户变量跟你使用哪些shell没有关系
+因为他一直都在 
+
+切换用户的时候尽量使用su -  这样就可以使用root 的环境变量    su -l username 切换用户 并使用该用户所有的变量
+
+
+
+
+当使用者执行 sudo 时，系统会主动的去寻找 /etc/sudoers 档案，判断该使用者是否有执行 sudo 的权限；
+
+
+
+至于编辑 /etc/sudoers 则需要 visudo 这个指令
+
+visudo 去编辑 /etc/sudoers 喔！(注： visudo 必须要使用 root 的身份来执行！)
+
+y$ 复制光标到结束
+p  是粘贴的意思
+
+这个时候，我们就可以考虑让单纯使用 mail 的账号以 /sbin/nologin 做为他们的 shell
+
+如果你曾经仔细的看过 /etc/shells 这个系统可用的 shell 档案，以及 /etc/passwd 这个档案的内容时，你应该会发现，
+嘿嘿！怎么有个怪怪的 /sbin/nologin 啊！ 这是什么[esine@localhost pam.d]$ who
+esine    tty1         2017-02-16 23:55 (:0)
+esine    pts/0        2017-02-24 09:55 (:0.0)
+[esine@localhost pam.d]$ last
+esine    pts/0        :0.0             Fri Feb 24 09:55   still logged in   
+esine    pts/0        :0.0             Fri Feb 24 09:40 - 09:55  (00:15)    
+上面两个指令是用来查看  最近有谁登陆过系统
+
+
+shell 呢？呵呵！赶紧利用 man nologin 就可以知道啦～
+
+[esine@localhost pam.d]$ who
+esine    tty1         2017-02-16 23:55 (:0)
+esine    pts/0        2017-02-24 09:55 (:0.0)
+[esine@localhost pam.d]$ last
+esine    pts/0        :0.0             Fri Feb 24 09:55   still logged in   
+esine    pts/0        :0.0             Fri Feb 24 09:40 - 09:55  (00:15)    
+
+  
+  如果要和其他在线用户交流  可以使用talk  但是要启动一些网络服务 
+  
+  详细信息man talk  除了在线对谈交流
+  
+  [vbird@linux ~]$ write dmtsai
+Hi, How are you doing today....
+Nothing.... just say hello to you!
+<==这里按下 [ctrl]+d
+此时，另一端的 dmtsai 在他的终端接口上就会出现如下所示：
+[dmtsai@linux ~]$
+Hi, How are you doing today....
+Nothing.... just say hello to you!
+EOF
+
+
+[dmtsai@linux ~]$ mesg n
+
+
+[vbird@linux ~]$ write dmtsai
+write: dmtsai has messages disabled
+呼呼！了解乎？而如果想要解开的话，再次下达『 mesg y 』就好啦！想要知道目前的 mesg 状态，直接下达『 mesg 』即可！瞭呼？
+
+write 是写给一个人   wall 是广播消息
+
+我的 dmtsai 就具有 /var/spool/mail/dmtsai 这个 mailbox 喔！  可以通过邮箱发送离线消息
+
+pwck 这个指令在检查 /etc/passwd 这个账号设定文件内的信息，与实际的家目录是否存在等信息，
