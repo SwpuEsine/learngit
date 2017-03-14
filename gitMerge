@@ -1,0 +1,16 @@
+git pull : 首先，基于本地的FETCH_HEAD记录，比对本地的FETCH_HEAD记录与远程仓库的版本号，
+然后git fetch 获得当前指向的远程分支的后续版本的数据，然后再利用git merge将其与本地的当前分支合并。
+使用git merge是默认合并的当前分支    git fetch  是抓取远程的分支数据 orgin/分支名   来放入本地仓库中
+git push  是推送本地所有的更新
+
+
+
+push操作    (语法git push  服务器   本地分支：远程分支)
+
+jixiuf@jf repos $ git push origin master    是git push origin master:master的简写
+
+
+从远程分支检出的本地分支，称为_跟踪分支(tracking branch)_。跟踪分支是一种和远程分支有直接联系的本地分支。
+在跟踪分支里输入 git push，Git 会自行推断应该向哪个服务器的哪个分支推送数据。反过来，
+在这些分支里运行 git pull会获取所有远程索引，并把它们的数据都合并到本地分支中来。
+跟踪分支
