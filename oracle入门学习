@@ -1,0 +1,147 @@
+oracle 支持用户以面向对象的方式来操作数据库
+数据库中每张表的每一行都是一个用户实例
+
+pl/sql块的组成分为  定义  执行  异常三个部分
+
+其中定义和异常都是可选的  但是一个最简单的pl/sql语句块 最少要含有一个begin end 执行语句块 
+如果要写一个什么都不做的语句块  begin null end
+
+tnsnames.ora 这个配置文件中 不要加空格  空格会影响pl/sql文件的读取
+
+在oracle中 如果select-into 语句没有检索到数据  会触发no_data_found异常
+
+
+oracle中的条件控制语句  if  then else    else 是当条件为Null 或者false的时候执行
+
+case when 语句和 switch  case 的一个when 字句不存在的时候会发生异常
+
+存储过程不能使用return 返回值 当需要返回值的时候 就要使用oracle函数
+
+create or replace function f1
+return varchar--必须有返回值，且声明返回值类型时不需要加大小
+as
+  msg varchar(50);
+begin
+   msg := 'hello world';
+   return msg;
+end;
+
+--执行函数方式1
+select f1() from dual;
+--执行函数方式2
+set serveroutput on;
+begin 
+  dbms_output.put_line(f1());
+end;
+
+
+
+create or replace procedure p1
+--or replace代表创建该存储过程时，若存储名存在，则替换原存储过程，重新创建
+--无参数列表时，不需要写()
+as
+begin
+  dbms_output.put_line('hello world');
+end;
+
+--执行存储过程方式1
+set serveroutput on;
+begin
+  p1();
+end;
+--执行存储过程方式2
+set serveroutput on;
+execute p1();
+
+触发器通常只能被隐式 执行  而且不可以接受参数
+函数与存储过程的区别 是存储过程不返回值，而函数可以返回值
+
+
+oracle中的集合与记录
+  集合允许将类型相同的多个变量当做一个整体对待  类似java或者c中的数组
+  记录允许将不同类型的数据类型组合起来打包
+oracle中的自定义异常
+Exception 
+  when NO_DATA_FOUND
+      DBMS_OUTPUT.put_line('没有找到记录')
+  when others
+      DBMS_OUTPUT.put_line('其他异常情况')
+      
+   其中数据未找到异常通常是select 数据into  没有找到这个数据 因此没办法Into
+   
+   静态sql指的是在sql执行前 已经存在了sql中显示的表  字段  同时有执行的权限
+   
+   动态sql指的是在运行时由字符串拼接合成的sql语句  比如在pl/sql中不能执行ddl语句
+   
+   v_Sqlstr:='drop table temp'
+   
+   execute immediate v_sqlstr
+   
+   pl/sql 中对标识符不区分大小写
+   
+   对于变量的定义  每行只定义一个变量 这是要求
+   
+   日期值也要用单引号括起来   字符串文字也必须用单引号将字符串文本括起来
+   
+   如果字符串中包含单引号如i'm a string  则使用两个单引号"i''m a string"
+   
+   缩进推荐使用3空格缩进
+   
+   select sysdate from dual
+   
+   oracle中的赋值  分为  初始赋值
+   
+   然后在begin end块中赋值 :=
+   
+   还有在select 语句中赋值
+   
+   
+   select into  如果返回多行数据  会出现many row异常  如果没有找到数据  会触发no_data_found 异常
+     
+   oracle中varchar2(20)  与char(20) 其中默认都是20个字节 
+   
+   如果要明确指出  需要 declare  name varchar2(20 CHAR)
+   
+   varchar2  其中必须指出长度 
+   
+   char  不指定长度的情况下 默认长度是1
+   
+   物理rowid 与逻辑rowid 之分   物理rowid用来识别普通数据表的一行信息 逻辑rowid能够标识索引组织表的一行信息
+   
+   1.varchar2把所有字符都占两字节处理(一般情况下)，varchar只对汉字和全角等字符占两字节，数字，英文字符等都是一个字节；
+   
+   oracle 中单字节和多字节   varchar 和varchar2  varchar 中英文用单字节 只有中文才会用双字节  而varchar2（d） 是所有的都是双字节，根据数据库字符集
+   
+   当字符集是gbk那么汉字就两个字节   而如果是utf-8 那么一个汉字是三个字节
+   
+   P指精度(precision)，即总位数。默认情况下精度为38。精度的取值范围为1~38。
+
+S指小数位(scale)，小数点右边的位数。小数点位数的合法值为-84~127。小数位的默认值由精度来决定。如果没有指定精度，
+小数位默认为最大的取值区间。如果指定了精度，没有指定小数位。小数位默认为0(即没有小数位)。  
+如果number类型没有指定 刻度 则默认是0
+
+可以使用todate和tochar 在日期和时间之间来转换
+
+data 从世纪 到秒  各占一个字节  一共7个字节
+
+
+timestamp 与date的不同之处在于 它可以存储秒字段的小数部分 timestamp(6)  data没有秒的小数部分精度
+
+ 
+ oracle中并不包含bool类型的值  多数情况下使用char(1)来代替不二值
+  
+  
+ 但是为了数据库中的需要包含了布尔值  但是不能往数据库插入或者从数据库检索出布尔值
+ 
+ 
+ 在oracle中有两种引用类型 分别是ref cursor 和ref类型   ref是对象类型  ref cursor 游标变量
+ 
+ 引用类型和其他类型的主要不同之处在于内存和存储的处理
+ 
+ 
+ oracle中的比较运算符   用于比较两个表达式   结果总是true false null  如果表达式中任意一个值为null  则整个结果也为Null
+ 
+ oracle 比较运算符一个=  而不是两个=
+ 
+ 
+ 
