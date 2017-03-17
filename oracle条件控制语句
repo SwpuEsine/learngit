@@ -122,7 +122,92 @@
          
          从键也可以知道  一个Key 肯定是一个value  所以外键引用的必须是主键
          
+         外键可以引用另一张表的主键或者 唯一键
+         
+         constraint 约束名  foreign key () reference 表名(字段名)
+         
+         
+         除了主键约束  唯一键约束外  还有check约束
+         
+         例如create table invoice_check{
+         
+               invoice_id   NUMBER,
+               finvo_total  Number(6,2) check(finvo_total>0 AND invi<=500)
+         
+         }
          
       
         
       
+       检查约束的限制   检查约束不能包含子查询和标量子查询
+       不能为视图建立检查约束
+       
+       
+       数据字典表本身不能被直接访问    必须通过数据字典视图来访问数据字典中的信息    系统的数据字典视图以v$ 开头
+       
+       select * from user_constraints where table_name='TBL_FUN_INF' 
+       
+       alter table Stu_PkFk_S add constraint PK_S primary key (sno)
+       
+       语法：alter table 表名 drop constraint 主键约束名
+       
+       alter table 表名 drop constraint 外键约束名
+       
+       alter table 表名 add constraint 外键约束名 foreign key(列名) references 引用外键表(列名)
+       
+       alter table 表明 drop column  列名   可以删除表的列
+       
+       当drop一个表的时候  如果别的表有引用这张表 则这张表不可删除  而字段之间有应用的话 会删除  会级联删除  设置cascaded
+       
+       on delete cascade;
+       
+       索引的好处是相当于一个书签  它会加速数据的检索  但是会增加维护的成本
+       
+       一张表只能有一个聚众索引  但是可以有多个非聚众索引
+       
+       oracle不推荐人为的创建唯一性索引   当你在创建表的时候创建了主键约束   或者唯一键约束   oracle会自动在约束列上建立唯一索引
+       
+       3、 在一个分支节点块中所能容纳的记录行数由数据块大小以及索引键值的长度决定。比如
+       
+       
+       B树索引 一般是两层 或者三层结构   每个节点有两个字段  第一个表示下个节点中的最小键值   第二个表示地址
+       
+       在叶子节点中  第一个表示值  第二个表示rowid  其中是双向链表
+       
+       http://blog.csdn.net/zhaohuabing/article/details/1447721
+       
+       聚众索引 就像拼音  非聚众索引像偏旁部首  
+       
+       oracle中的单列索引不能插入null值   如果有Null 值则不会利用索引  因为建立索引会排序  默认是升序null值不利于比较操作
+       
+       对于身份证号这种需要建立b树索引 因为建立需要全表扫描  然后排序  基数大不重复 
+       
+       而对于基数比较小   比如性别 这些  只需要使用位图索引就可以了
+       
+       
+       
+       逻辑碎片是在文件系统里，数据库文件的碎片，这和其他任何文件一样。这在文件系统不能分配给数据库文件连续空间时产生。这会造成磁头从数据库文件读时需要来回移动。SQL Server对此毫不知情，也不能用任何脚本去检查逻辑磁盘碎片。逻辑磁盘碎片可以因下列原因产生：
+
+数据库文件与其它文件（系统文件和其他应用程序文件）放在同个磁盘；
+数据库文件以小块大小频繁增长
+移除逻辑碎片我们可以使用系统碎片整理工具，但是注意，在进行碎片整理时，我们需要停止SQL Server，不然的话碎片整理工具会跳过数据库文件，因为它正被SQL Server使用。
+
+避免逻辑碎片的最佳方式是:
+
+将数据库文件放在独立的硬盘，与其他应用程序和日志文件分开。
+创建新数据库的时候，估计下数据库文件的大小并分配足够的空间避免数据库文件的频繁增长。
+指定数据库文件增长选项为大块而不是频繁的小块增长。
+
+http://www.cnblogs.com/woodytu/p/4513562.html
+索引碎片的产生 1  是由于文件系统的影响   2 是由于索引文件的逻辑顺序与物理顺序不一致造成的
+
+内部碎片是执行insert  delete  update 的时候产生的碎片
+
+磁盘碎片会影响性能    
+
+删除索引 drop index 索引名
+
+ 当前用户需要drop index 权限   其他用户需要drop any index 权限
+ 
+ 
+       
