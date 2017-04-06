@@ -10,3 +10,9 @@ git branch -vv  可以看到本地和远程的关联情况
 git branch -u origin/本地分支名   两个名称必须一致才可以 提交    否则没用
 
 git branch -m  旧名称   新名称
+
+
+使用命令 git remote show origin，可以查看remote地址，远程分支，还有本地分支与之相对应关系等信息。 stale 过期的  
+
+远程仓库删除了一个分支  本地fetch 无法看到，本地git branch -a 仍然可以看到被删除的分支
+使用上面的语句  可以看到过期的分支  然后删除
