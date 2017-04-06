@@ -16,3 +16,6 @@ git branch -m  旧名称   新名称
 
 远程仓库删除了一个分支  本地fetch 无法看到，本地git branch -a 仍然可以看到被删除的分支
 使用上面的语句  可以看到过期的分支  然后删除
+
+
+ git push origin test:master   这个命令 如果远程没有master 就会创建，  有的话  会把内容变成本地的内容
