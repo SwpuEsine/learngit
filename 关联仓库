@@ -4,3 +4,9 @@
 
 git checkout -b 本地名字名  origin/元旦分支名  也会关联
 
+
+git branch -vv  可以看到本地和远程的关联情况
+
+git branch -u origin/本地分支名   两个名称必须一致才可以 提交    否则没用
+
+git branch -m  旧名称   新名称
