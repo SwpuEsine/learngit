@@ -1,4 +1,5 @@
 本地仓库和远程仓库关联使用 git push -u
+git push -u origin master
 在推送的时候会自动关联起来      将本地分支和远程分支映射  以后就可以使用git push命令了
 
 
