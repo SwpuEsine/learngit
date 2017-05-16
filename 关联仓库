@@ -27,3 +27,6 @@ git branch -m  旧名称   新名称
 当你解决完冲突，并且在合并完成后发现一个错误，你仍然还是有机会来简单地撤销它。你只须要键入 “git reset --hard ” 命令，系统就会回滚到那个合并开始前的状态，然后重新开始吧！
 
 
+git log --pretty=oneline WebContent/ui/view/risk/T40202/T40202Upload.js
+
+可以查看一个文件被谁修改过   
